@@ -33,7 +33,7 @@ def knn(train_data, test_data, k):
                         train_data.seek(0) # ustawienie wskaźnika aktualnego czytania danych uczącyhc z pliku na początek
 
                         for train_digit in train_reader: # pętla sczytująca każdą cyfrę uczącą z zestawu cyfr uczących
-                            distance = euclidean_distance(train_digit, test_digit) # lista przechowująca wartość odległości pomiędzy wektorem cyfry testującej od cyfry uczącej
+                            distance = euclidean_distance(train_digit, test_digit) # lista przechowująca wartość cyfry testującej oraz jej wartość odległości pomiędzy wektorem tej cyfry od wektora cyfry uczącej
                             tmp.append([train_digit[0], distance]) # poszerzenie listy o nową odległość
 
                         classified = classify(tmp, k) # lista przechowująca rezultat klasyfikacji dla k=1..k sąsiadów
@@ -58,31 +58,23 @@ def euclidean_distance(vect_1, vect_2): # funkcja obliczająca odległość Eukl
 
 
 def classify(distances, k): # funkcja klasyfikująca cyfrę
-    classification_votes = {} # słownik przechowujący ilość wystąpień takiej samej sklasyfikowanej cyfry dla k=1..k najkrótszych odległości
-    sorted_classification_votes_table = []  # is a retured list that contain classified digit for k =1, k =2,.., k = 7
-    distances.sort(key=operator.itemgetter(1))
+    classification_digits = {} # słownik przechowujący ilość wystąpień takiej samej sklasyfikowanej cyfry dla k=1..k najkrótszych odległości
+    sorted_classification_digits_table = []  # zwracana przez funkcję lista przechowująca rezultat klasyfikacji dla k=1..k sąsiadów
+    distances.sort(key=operator.itemgetter(1)) # sortowanie (od najmniejszej wartości) listy przechowującej odległości pomiędzy cyfrą testującą a uczącą
 
-    for x in range(k):
-        vote = distances[x][0]
-        if vote in classification_votes:  # if
-            classification_votes[vote] += 1
-        else:
-            classification_votes[vote] = 1
-        sorted_classification_votes = sorted(classification_votes.items(), key=operator.itemgetter(1),
-                                             reverse=True)
-        # print(sorted_classification_votes)
-        sorted_classification_votes_table.append(sorted_classification_votes[0][0])
+    for x in range(k): # pętla iterująca od 1 do k odległości w liście distances
+        digit = distances[x][0]
+        if digit in classification_digits:  # jeśli zadana cyfra wystąpiła już w x najkrótszych odległościach to zwiększ licznik wystąpień danej cyfry
+            classification_digits[digit] += 1
+        else: # w przeciwnym wypadku ustaw licznik wystąpień zadanej cyfry na 1
+            classification_digits[digit] = 1
+        sorted_classification_digits = sorted(classification_digits.items(), key=operator.itemgetter(1),
+                                             reverse=True) # posortowanie słownika (od największej wartości) w zależności od liczby wystąpień klasyfikacji danej cyfry
+        sorted_classification_digits_table.append(sorted_classification_digits[0][0]) # weź pod uwagę cyfrę sklasyfikowaną która ma największą ilość wystąpień w słowniku
 
-    print(sorted_classification_votes_table)
-    return sorted_classification_votes_table
+    return sorted_classification_digits_table
 
-    # TODO
-    '''
-        - rozbieznosc 
-        - plot errors  depending on k
-        - using 4 cores
-        - procentage value of errors
-    '''
+    # TODO rysowanie wykresu 
 
 
 def errors(classified, test_digit): # funkcja zwiększająca licznik błędów dla k=1..k sąsiadów jeśli sklasyfikowana cyfra różni się od rzeczywistej cyfry
