@@ -44,18 +44,16 @@ def knn(train_data, test_data, k):
 
                         errors(classified, test_digit)
 
-    print(fieldnames2[6])
-    output_writer2.writerow( # wypisywanie błędów klasyfikacyjnych dla k=1..k sąsiadów do pliku errors.csv
-        {fieldnames2[0]: error[0], fieldnames2[1]: error[1], fieldnames2[2]: error[2],
-         fieldnames2[3]: error[3], fieldnames2[4]: error[4], fieldnames2[5]: error[5],
-         fieldnames2[6]: error[6]})
+                    output_writer2.writerow( # wypisywanie błędów klasyfikacyjnych dla k=1..k sąsiadów do pliku errors.csv
+                        {fieldnames2[0]: error[0], fieldnames2[1]: error[1], fieldnames2[2]: error[2],
+                         fieldnames2[3]: error[3], fieldnames2[4]: error[4], fieldnames2[5]: error[5],
+                         fieldnames2[6]: error[6]})
 
 
 def euclidean_distance(vect_1, vect_2): # funkcja obliczająca odległość Euklidesową pomiędzy dwoma zadanymi wektorami
     distance = 0
     for column in range(1, len(vect_1)):
         distance += (int(vect_1[column]) - int(vect_2[column])) ** 2
-        print(distance)
     return distance ** .5
 
 
@@ -96,7 +94,7 @@ def errors(classified, test_digit): # funkcja zwiększająca licznik błędów d
 
 def main():
     train_data = 'mnist_train_train.csv'  # zestaw danych uczących
-    test_data = 'mnist_test.csv'  # zestaw danych testujących
+    test_data = 'mnist_test3.csv'  # zestaw danych testujących
     k = 7  # liczba sąsiadów
 
     knn(train_data, test_data, k)  # knn - funkcja klasyfikująca algorytmem k najbliższych sąsiadów zadane cyfry arabskie z zestawu testujących danych MNIST na podstawie uczącego zestawu danych MNIST.
