@@ -1,6 +1,6 @@
 # Digit-Interpreter
 ## Overview
-Classification algorithm for interpreting digits using Python and MNIST dataset based on k Nearest Neighbours machine learning algorithm implemented from scratch by myself.
+Classification algorithm for interpreting digits using Python and MNIST dataset based on k Nearest Neighbours machine learning algorithm implemented from scratch.
 ## 1. Requirements
 - Python 3.x
 ## 2. Build and run setup
